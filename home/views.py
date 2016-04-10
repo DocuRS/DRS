@@ -4,6 +4,9 @@ from django.template import loader, RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate
 from .models import Project
+
+from sourcetrans.macro_module import macros, jeeves
+import JeevesLib
 #from django.contrib.auth.models import User
 
 #warning: HttpResponseRedirect does not work in dJango 1.6.5

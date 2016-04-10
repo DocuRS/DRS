@@ -6,24 +6,31 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+from jeevesdb.JeevesModel import JeevesModel as Model, JeevesForeignKey as ForeignKey
+from jeevesdb.JeevesModel import label_for
+
+from sourcetrans.macro_module import macros, jeeves
+import JeevesLib
+
 # Create your models here.
-class Department(models.Model):
+class Department(Model):
     dept_name = models.CharField(max_length = 128)
 
-    def __str__(self):
-        return self.dept_name
-
 class Employee(User):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = ForeignKey(Department, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.first_name
-        
-class Project(models.Model):
+class Project(Model):
     project_name = models.CharField(max_length = 128)
     start_date = models.DateTimeField('date started')
     end_date = models.DateTimeField('date ended')
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = ForeignKey(Department, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.project_name
+    @staticmethod
+    def get_jeeves_private_project_name(project):
+        return "[redacted]"
+
+    @staticmethod
+    @label_for('project_name')
+    @jeeves
+    def jeeves_restrict_projectlabel(project, ctxt):
+        return project.department == ctxt.department
