@@ -3,7 +3,7 @@
 		  <div class="row-fluid">
 		    <div class="col-md-8">
 		    <h2>Projects</h2>
-				{% for project in projects %}
+				{% for project in concretize(projects) %}
 					<li><a href= "#">{{ project.project_name }}</a>
 					</li>
 				{% endfor %}

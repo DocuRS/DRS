@@ -26,13 +26,13 @@ class UserProfile(Model):
 
     @staticmethod
     def jeeves_get_private_email(user):
-        return ""
+        return "[redacted]"
 
     @staticmethod
     @label_for('email')
     @jeeves
     def jeeves_restrict_userprofilelabel(user, ctxt):
-        return user == ctxt or (ctxt != None and ctxt.level == 'admin')
+        return user == ctxt
     department = ForeignKey(Department, on_delete=models.CASCADE)
 
 
@@ -59,4 +59,4 @@ current_module = sys.modules[__name__]
 @receiver(post_syncdb, sender=current_module)
 def dbSynced(sender, **kwargs):
     if settings.DEBUG:
-        execfile(os.path.join(settings.BASE_DIR, '..', 'SampleData.py'))
+        execfile(os.path.join(settings.BASE_DIR, 'SampleData.py'))
