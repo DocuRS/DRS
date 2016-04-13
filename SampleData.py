@@ -16,8 +16,8 @@ dhruvenUser=UserProfile.objects.create(
   , email="dhruven@sjsu.edu"
   , name="Dhruven Vora"
   , department=cs)
-User.objects.create_user('dhurven', 'dhruven@sjsu.edu', 'dhruven')
+User.objects.create_user('dhruven', 'dhruven@sjsu.edu', 'dhruven')
 
 Project.objects.create(project_name = "Document Repository System", start_date = datetime.now(), end_date = datetime.now(), department = cs)
 
-Project.objects.create(project_name = "VideoServer", start_date = datetime.now(), end_date = datetime.now(), department = ee)
+Project.objects.create(project_name = "Video Server", start_date = datetime.now(), end_date = datetime.now(), department = ee)

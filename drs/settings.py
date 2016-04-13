@@ -25,6 +25,8 @@ SECRET_KEY = '4a1gg4s#qiyti*dxuq+xfq@msqr4p_8(wb!k_xznv+5ph*1$tm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+TEMPLATE_DEBUG = True
+
 ALLOWED_HOSTS = []
 
 
@@ -37,8 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django_jinja',
     'django.contrib.staticfiles',
 ]
+
+TEMPLATE_LOADERS = (
+    'django_jinja.loaders.AppLoader',
+    'django_jinja.loaders.FileSystemLoader',
+)
+DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
 
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -118,51 +127,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-def monkey_patch():
-    def force_text(s, encoding='utf-8', strings_only=False, errors='strict'):
-        """
-        Similar to smart_text, except that lazy instances are resolved to
-        strings, rather than kept as lazy objects.
-        If strings_only is True, don't convert (some) non-string-like objects.
-        """
-        # Handle the common case first for performance reasons.
-        if issubclass(type(s), six.text_type):
-            return s
-        if strings_only and is_protected_type(s):
-            return s
-        try:
-            if not issubclass(type(s), six.string_types):
-                if six.PY3:
-                    if isinstance(s, bytes):
-                        s = six.text_type(s, encoding, errors)
-                    else:
-                        s = six.text_type(s)
-                elif hasattr(s, '__unicode__'):
-                    s = six.text_type(s)
-                else:
-                    s = six.text_type(bytes(s), encoding, errors)
-            else:
-                # Note: We use .decode() here, instead of six.text_type(s, encoding,
-                # errors), so that if s is a SafeBytes, it ends up being a
-                # SafeText at the end.
-                s = s.decode(encoding, errors)
-        except UnicodeDecodeError as e:
-            if not isinstance(s, Exception):
-                raise DjangoUnicodeDecodeError(s, *e.args)
-            else:
-                # If we get to here, the caller has passed in an Exception
-                # subclass populated with non-ASCII bytestring data without a
-                # working unicode method. Try to handle this without raising a
-                # further exception by individually forcing the exception args
-                # to unicode.
-                s = ' '.join(force_text(arg, encoding, strings_only, errors)
-                             for arg in s)
-        return s
-
-    import six
-    from django.utils.encoding import is_protected_type
-    import django.utils.encoding
-    django.utils.encoding.force_text = force_text
-monkey_patch()
