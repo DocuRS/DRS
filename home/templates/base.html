@@ -5,23 +5,13 @@
 		<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Tasks</title>
-		<link href="{% static 'home/bootstrap-3.3.6-dist/css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+		<title>DRS</title>
+		<link href="{% static "bootstrap-3.3.6-dist/css/bootstrap.min.css" %}" type="text/css" rel="stylesheet">
 	</head>
 	<body style="background-size:100%;background-attachment:fixed;">
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a class="navbar-brand" href="#">Task Manager</a>
-		    </div>
-
+				<h2>Document Repository System <small>Powered by Jeeves</small></h2>
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<!--TODO: This part of navbar can be used to add additional feature in future -->
@@ -30,13 +20,13 @@
 		</nav>
 
 	    <div class="container-fluid" style="padding-top:100px;padding-bottom: 55px;">
-			{% block main_content %}
+			{% block content %}
 			{% endblock %}
 		</div>
 	<footer class = "footer navbar-fixed-bottom well" style="text-align:center;padding:10px">
 		&copy; 2016
 	</footer>
-	<script src="{% static 'home/jquery-2.2.0.min.js' %}"></script>
-	<script src="{% static 'home/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script>
+	<script src="{% static "jquery-2.2.0.min.js" %}"></script>
+	<script src="{% static "bootstrap-3.3.6-dist/js/bootstrap.min.js" %}"></script>
 	</body>
 </html>
