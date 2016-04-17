@@ -125,4 +125,4 @@ def project_home(request, user_profile):
     project_id = request.GET.get('id')
     project = Project.objects.get(jeeves_id=project_id);
     documents = Document.objects.filter(project=project).all()
-    return ("project_home.html", {'documents': document})
+    return ("landing.html", {'projects': projects, 'which_page': "landing"})
