@@ -115,4 +115,4 @@ def register_account(request):
 def landing(request, user_profile):
     JeevesLib.set_viewer(user_profile)
     projects = Project.objects.all()
-    return ("landing.html", {'projects': projects})
+    return ("landing.html", {'projects': projects, 'which_page': "landing"})
