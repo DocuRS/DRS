@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'login/$', 'django.contrib.auth.views.login'),
     url(r'logout/$', 'django.contrib.auth.views.logout_then_login'),
     url(r'^accounts/profile/$', views.landing),
+    url(r'^accounts/profile/project/$', views.project_home, name="project_home"),
     url(r'^register$', views.register_account),
     url(r'^index$', views.landing),
     url(r'^$', views.landing),

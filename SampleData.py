@@ -1,4 +1,4 @@
-from .models import Project, UserProfile, Department
+from .models import Project, UserProfile, Department, Levels
 from datetime import datetime
 from django.contrib.auth.models import User
 
@@ -18,6 +18,32 @@ dhruvenUser=UserProfile.objects.create(
   , department=cs)
 User.objects.create_user('dhruven', 'dhruven@sjsu.edu', 'dhruven')
 
-Project.objects.create(project_name = "Document Repository System", start_date = datetime.now(), end_date = datetime.now(), department = cs)
+projectJ = Project.objects.create(
+    project_name = "Document Repository System",
+    code_name = "Project_J",
+    start_date = datetime.now(),
+    end_date = datetime.now(),
+    department = cs)
 
-Project.objects.create(project_name = "Video Server", start_date = datetime.now(), end_date = datetime.now(), department = ee)
+projectV = Project.objects.create(
+    project_name = "Video Server",
+    code_name = "Project_V",
+    start_date = datetime.now(),
+    end_date = datetime.now(),
+    department = ee)
+
+doc1 = Document.objects.create(
+    document_name="Project_plan.docx",
+    description="Project plan",
+    last_accessed_by=kushalUser,
+    department=cs,
+    classification=Levels.SECRET,
+    project=projectJ)
+
+doc2 = Document.objects.create(
+    document_name="Project_plan.docx",
+    description="Project plan",
+    last_accessed_by=dhruvenUser,
+    department=ee,
+    classification=Levels.SECRET,
+    project=projectV)

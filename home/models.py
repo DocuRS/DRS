@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import datetime
+from enum import Enum
 
 from django.conf import settings
 from django.db import models
@@ -14,6 +15,12 @@ import os
 from sourcetrans.macro_module import macros, jeeves
 import JeevesLib
 
+class Levels(Enum):
+    PUBLIC = 0
+    CONFIDENTIAL = 1
+    SECRET = 2
+    TOP_SECRET = 3
+
 # Create your models here.
 class Department(Model):
     dept_name = models.CharField(max_length = 128)
@@ -23,6 +30,8 @@ class UserProfile(Model):
     username = models.CharField(max_length=1024)
     email = models.CharField(max_length=1024)
     name = models.CharField(max_length=1024)
+    clearance = models.IntegerField(default=Levels.PUBLIC)
+    department = ForeignKey(Department, on_delete=models.CASCADE)
 
     @staticmethod
     def jeeves_get_private_email(user):
@@ -33,24 +42,41 @@ class UserProfile(Model):
     @jeeves
     def jeeves_restrict_userprofilelabel(user, ctxt):
         return user == ctxt
-    department = ForeignKey(Department, on_delete=models.CASCADE)
-
 
 class Project(Model):
     project_name = models.CharField(max_length = 128)
+    code_name = models.CharField(max_length = 128)
     start_date = models.DateTimeField('date started')
     end_date = models.DateTimeField('date ended')
     department = ForeignKey(Department, on_delete=models.CASCADE)
 
     @staticmethod
     def jeeves_get_private_project_name(project):
-        return "[redacted]"
+        return project.code_name
 
     @staticmethod
     @label_for('project_name')
     @jeeves
     def jeeves_restrict_projectlabel(project, ctxt):
         return project.department == ctxt.department
+
+class Document(Model):
+    document_name = models.CharField(max_length = 128)
+    description = models.CharField(max_length = 512)
+    last_accessed_by = ForeignKey(UserProfile, on_delete=models.CASCADE)
+    department = ForeignKey(Department, on_delete=models.CASCADE)
+    classification = models.IntegerField(default=Levels.TOP_SECRET)
+    project = ForeignKey(Project, on_delete=models.CASCADE)
+
+    @staticmethod
+    def jeeves_get_private_document_name(document):
+        return "[redacted]"
+
+    @staticmethod
+    @label_for('document_name')
+    @jeeves
+    def jeeves_restrict_documentlabel(document, ctxt):
+        return document.classification <= ctxt.classification
 
 from django.dispatch import receiver
 from django.db.models.signals import post_syncdb
