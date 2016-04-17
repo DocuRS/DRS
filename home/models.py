@@ -76,7 +76,7 @@ class Document(Model):
     @label_for('document_name')
     @jeeves
     def jeeves_restrict_documentlabel(document, ctxt):
-        return document.classification <= ctxt.clearance
+        return document.classification <= ctxt.clearance and document.department == ctxt.department
 
 from django.dispatch import receiver
 from django.db.models.signals import post_syncdb

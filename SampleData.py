@@ -20,6 +20,14 @@ dhruvenUser=UserProfile.objects.create(
     department=cs)
 User.objects.create_user('dhruven', 'dhruven@sjsu.edu', 'dhruven')
 
+ben=UserProfile.objects.create(
+    username="ben",
+    email="ben@sjsu.edu",
+    name="Ben J",
+    clearance=Levels.SECRET,
+    department=ee)
+User.objects.create_user('ben', 'ben@sjsu.edu', 'ben')
+
 projectJ = Project.objects.create(
     project_name = "Document Repository System",
     code_name = "Project_J",
