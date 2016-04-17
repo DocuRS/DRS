@@ -6,16 +6,18 @@ cs = Department.objects.create(dept_name = "Computer Science")
 ee = Department.objects.create(dept_name = "Electrical Engineering")
 
 kushalUser=UserProfile.objects.create(
-    username="kushal"
-  , email="kushal@sjsu.edu"
-  , name="Kushal Palesha"
-  , department=cs)
+    username="kushal",
+    email="kushal@sjsu.edu",
+    name="Kushal Palesha",
+    clearance=Levels.SECRET,
+    department=cs)
 User.objects.create_user('kushal', 'kushal@sjsu.edu', 'kushal')
 dhruvenUser=UserProfile.objects.create(
-    username="dhruven"
-  , email="dhruven@sjsu.edu"
-  , name="Dhruven Vora"
-  , department=cs)
+    username="dhruven",
+    email="dhruven@sjsu.edu",
+    name="Dhruven Vora",
+    clearance=Levels.SECRET,
+    department=cs)
 User.objects.create_user('dhruven', 'dhruven@sjsu.edu', 'dhruven')
 
 projectJ = Project.objects.create(
@@ -34,7 +36,7 @@ projectV = Project.objects.create(
 
 doc1 = Document.objects.create(
     document_name="Project_plan.docx",
-    description="Project plan",
+    description="Project plan for Document Repository System",
     last_accessed_by=kushalUser,
     department=cs,
     classification=Levels.SECRET,
@@ -42,7 +44,7 @@ doc1 = Document.objects.create(
 
 doc2 = Document.objects.create(
     document_name="Project_plan.docx",
-    description="Project plan",
+    description="Project plan for Video Server",
     last_accessed_by=dhruvenUser,
     department=ee,
     classification=Levels.SECRET,

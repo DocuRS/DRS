@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate
-from .models import Project, UserProfile, Department
+from .models import Project, UserProfile, Department, Document
 
 from sourcetrans.macro_module import macros, jeeves
 import JeevesLib
@@ -125,4 +125,5 @@ def project_home(request, user_profile):
     project_id = request.GET.get('id')
     project = Project.objects.get(jeeves_id=project_id);
     documents = Document.objects.filter(project=project).all()
-    return ("landing.html", {'projects': projects, 'which_page': "landing"})
+    print documents[0].document_name
+    return ("project_home.html", {'documents': documents, 'which_page': "landing"})
