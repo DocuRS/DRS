@@ -115,15 +115,13 @@ def register_account(request):
 def landing(request, user_profile):
     JeevesLib.set_viewer(user_profile)
     projects = Project.objects.all()
-    return ("landing.html", {'projects': projects})
+    return ("landing.html", { 'projects': projects, 'which_page': "landing" })
 
 @login_required
 @request_wrapper
 @jeeves
 def project_home(request, user_profile):
     JeevesLib.set_viewer(user_profile)
-    project_id = request.GET.get('id')
-    project = Project.objects.get(jeeves_id=project_id);
+    project = Project.objects.get(jeeves_id=request.GET.get('id'))
     documents = Document.objects.filter(project=project).all()
-    print documents[0].document_name
-    return ("project_home.html", {'documents': documents, 'which_page': "landing"})
+    return ("project_home.html", {'documents': documents, 'which_page': "project_home"})
