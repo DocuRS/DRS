@@ -1,0 +1,11 @@
+- add user roles
+- add document upload functionality
+- add admin panel
+    - add user, project, department, documents
+- add project attribute to user
+  - read, write privileges to user's project only
+  - read-only privileges to other documents
+- add multiple labels in policies
+- overhaul UI
+
+- If enough time, port Jeeves to Django 1.9

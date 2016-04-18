@@ -56,7 +56,6 @@ class Project(Model):
     def jeeves_get_private_project_name(project):
         return project.code_name
 
-    #TODO: check if multiple labels allowed. If not try to add this functionality
     @staticmethod
     @label_for('project_name')
     @jeeves
