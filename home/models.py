@@ -32,6 +32,7 @@ class UserProfile(Model):
     name = models.CharField(max_length=1024)
     clearance = models.IntegerField(default=Levels.PUBLIC)
     department = ForeignKey(Department, on_delete=models.CASCADE)
+    #role =  'admin'
 
     @staticmethod
     def jeeves_get_private_email(user):
@@ -49,11 +50,13 @@ class Project(Model):
     start_date = models.DateTimeField('date started')
     end_date = models.DateTimeField('date ended')
     department = ForeignKey(Department, on_delete=models.CASCADE)
+    #url = "/project?id=" + self.jeeves_id
 
     @staticmethod
     def jeeves_get_private_project_name(project):
         return project.code_name
 
+    #TODO: check if multiple labels allowed. If not try to add this functionality
     @staticmethod
     @label_for('project_name')
     @jeeves
