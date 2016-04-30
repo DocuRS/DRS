@@ -3,11 +3,20 @@
 		  <div class="row-fluid">
 		    <div class="col-md-8">
 		    <h2>Documents</h2>
+				<table class="table table-bordered">
+					<tr>
+						<th>Document Name</th>
+						<th>Description</th>
+						<th>Last accessed by</th>
+					</tr>
 				{% for document in concretize(documents) %}
-					<li><h4><a href= "#">{{ document.document_name }}</a></h4>
-							<p>{{document.description}}</p>
-					</li>
+					<tr>
+							<td><a href= "#">{{ document.document_name }}</a></td>
+							<td>{{document.description}}</td>
+							<td>{{document.last_accessed_by.name}}</td>
+					</tr>
 				{% endfor %}
+				</table>
 		    </div>
 		  </div>
 {% endblock %}
