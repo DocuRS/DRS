@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form role="form" class="form-new-project" method="post" action="/project/add/">{% csrf_token %}
+  <div style="display:flex;justify-content:center;align-items:center;">
+    <div class="col-xs-3">
+      <h2 class="form-signin-heading text-center">Add Project</h2>
+      <input type="text" class="form-control" id="id_projectname" maxlength="254" name="project_name" placeholder="Project Name" required>
+      <input type="text" class="form-control" id="id_codename" maxlength="254" name="code_name" placeholder="Code Name" required>
+      <!--<input type="date" class="form-control" id="id_startdate" name="start_date" placeholder="Start Date">
+      <input type="date" class="form-control" id="id_enddate" name="end_date" placeholder="End Date">-->
+      <select class="form-control" id="id_department" name="dept_name" placeholder="Department" required>
+        <option>Select Department</option>
+          <option value="{{concretize(dept_name)}}">{{concretize(dept_name)}}</option>
+      </select>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-top: 10px;">Add</button>
+    </div>
+  </div>
+
+</form>
+{% endblock %}

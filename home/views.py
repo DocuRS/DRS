@@ -7,6 +7,7 @@ from django.template import loader, RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate
 from .models import Project, UserProfile, Department, Document
+from datetime import datetime
 
 from sourcetrans.macro_module import macros, jeeves
 import JeevesLib
@@ -125,3 +126,28 @@ def project_home(request, user_profile):
     project = Project.objects.get(jeeves_id=request.GET.get('id'))
     documents = Document.objects.filter(project=project).all()
     return ("project_home.html", {'documents': documents, 'which_page': "project_home"})
+
+@login_required
+@request_wrapper
+@jeeves
+def add_project(request, user_profile):
+    JeevesLib.set_viewer(user_profile)
+    dept_name = user_profile.department.dept_name
+    return ("add_project.html", {'dept_name': dept_name})
+
+@login_required
+@request_wrapper
+@jeeves
+def add_new_project(request, user_profile):
+    JeevesLib.set_viewer(user_profile)
+    project_name = request.POST["project_name"]
+    code_name = request.POST["code_name"]
+    department = Department.objects.get(dept_name=request.POST.get('dept_name'))
+    Project.objects.create(
+        project_name = project_name,
+        code_name = code_name,
+        start_date = datetime.now(),
+        end_date = datetime.now(),
+        department = department)
+    #TODO: redirect to the landing page.    
+    return ("add_project.html", {'dept_name': department.dept_name})

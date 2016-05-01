@@ -62,6 +62,9 @@ class Project(Model):
     def jeeves_restrict_projectlabel(project, ctxt):
         return project.department == ctxt.department
 
+    def __str__(self):
+        return self.project_name
+
 class Document(Model):
     document_name = models.CharField(max_length = 128)
     description = models.CharField(max_length = 512)
