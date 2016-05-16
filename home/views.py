@@ -6,8 +6,10 @@ from django.http import HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate
-from .models import Project, UserProfile, Department, Document
+from .models import Project, UserProfile, Department, Document, Levels
 from datetime import datetime
+import cgi
+from django.db import transaction
 
 from sourcetrans.macro_module import macros, jeeves
 import JeevesLib
@@ -125,7 +127,7 @@ def project_home(request, user_profile):
     JeevesLib.set_viewer(user_profile)
     project = Project.objects.get(jeeves_id=request.GET.get('id'))
     documents = Document.objects.filter(project=project).all()
-    return ("project_home.html", {'documents': documents, 'which_page': "project_home"})
+    return ("project_home.html", {'documents': documents, 'which_page': "project_home", 'project_name': project.project_name, 'project_id': request.GET.get('id')})
 
 @login_required
 @request_wrapper
@@ -133,21 +135,63 @@ def project_home(request, user_profile):
 def add_project(request, user_profile):
     JeevesLib.set_viewer(user_profile)
     dept_name = user_profile.department.dept_name
-    return ("add_project.html", {'dept_name': dept_name})
+    return ("add_project.html", {'dept_name': dept_name,})
 
 @login_required
 @request_wrapper
 @jeeves
 def add_new_project(request, user_profile):
     JeevesLib.set_viewer(user_profile)
-    project_name = request.POST["project_name"]
-    code_name = request.POST["code_name"]
-    department = Department.objects.get(dept_name=request.POST.get('dept_name'))
+    project_name = request.POST['project_name']
+    code_name = request.POST['code_name']
+    department = Department.objects.get(dept_name=request.POST['dept_name'])
     Project.objects.create(
         project_name = project_name,
         code_name = code_name,
         start_date = datetime.now(),
         end_date = datetime.now(),
         department = department)
-    #TODO: redirect to the landing page.    
+    #TODO: redirect to the landing page.
     return ("add_project.html", {'dept_name': department.dept_name})
+
+@login_required
+@request_wrapper
+@jeeves
+def add_document(request, user_profile):
+    JeevesLib.set_viewer(user_profile)
+    project_id = request.GET["p"];
+    return ("add_document.html", {'project_id': project_id})
+
+@login_required
+@request_wrapper
+@jeeves
+@transaction.commit_on_success
+def add_new_document(request, user_profile):
+    JeevesLib.set_viewer(user_profile)
+
+    document_name = request.POST.get('document_name')
+    description = request.POST.get('description')
+    classification = request.POST.get('classification')
+    project_id = request.POST.get('project_id')
+    filedata = request.FILES.get('docfile')
+    department = user_profile.department
+
+    project = Project.objects.get(jeeves_id=project_id)
+
+    #If we don't concretize the filedata, DRS will store the file twice.
+    filedata = JeevesLib.concretize(user_profile, filedata)
+
+    Document.objects.create(
+        document_name = document_name,
+        description = description,
+        last_accessed_by = user_profile,
+        department = department,
+        classification = getattr(Levels, classification),
+        project = project,
+        filedata = filedata)
+
+    return ("add_document.html", {'project_id': project_id})
+
+
+def getAllDocuments(project):
+    return Document.objects.filter(project=project).all()

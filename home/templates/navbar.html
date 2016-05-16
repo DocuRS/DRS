@@ -18,6 +18,9 @@
         {% if which_page=="landing"%}
         <li><a href="/project/new/">New Project</a></li>
         {% endif %}
+        {% if which_page=="project_home"%}
+        <li><a href="/project/upload/?p={{concretize(project_id)}}">Upload Document</a></li>
+        {% endif %}
       </ul>
     {% endif %}
       <ul class="nav navbar-nav navbar-right">

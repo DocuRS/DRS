@@ -42,7 +42,7 @@ projectV = Project.objects.create(
     end_date = datetime.now(),
     department = ee)
 
-doc1 = Document.objects.create(
+"""doc1 = Document.objects.create(
     document_name="Project_plan.docx",
     description="Project plan for Document Repository System",
     last_accessed_by=kushalUser,
@@ -56,4 +56,4 @@ doc2 = Document.objects.create(
     last_accessed_by=dhruvenUser,
     department=ee,
     classification=Levels.SECRET,
-    project=projectV)
+    project=projectV)"""

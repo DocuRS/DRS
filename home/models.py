@@ -72,6 +72,7 @@ class Document(Model):
     department = ForeignKey(Department, on_delete=models.CASCADE)
     classification = models.IntegerField(default=Levels.TOP_SECRET)
     project = ForeignKey(Project, on_delete=models.CASCADE)
+    filedata = models.FileField(upload_to='rep/')
 
     @staticmethod
     def jeeves_get_private_document_name(document):
@@ -82,6 +83,9 @@ class Document(Model):
     @jeeves
     def jeeves_restrict_documentlabel(document, ctxt):
         return document.classification <= ctxt.clearance and document.department == ctxt.department
+
+    def __str__(self):
+        return "%s:%s" % (self.document_name,self.classification)
 
 from django.dispatch import receiver
 from django.db.models.signals import post_syncdb
